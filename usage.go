@@ -73,6 +73,10 @@ func formatCmdUsage(app *ApplicationModel, cmd *CmdModel) string {
 	return strings.Join(s, " ")
 }
 
+func formatAdditionalUsage(app *ApplicationModel) string {
+	return "TEST"
+}
+
 func formatFlag(haveShort bool, flag *FlagModel) string {
 	flagString := ""
 	if flag.Short != 0 {
@@ -187,8 +191,9 @@ func (a *Application) UsageForContextWithTemplate(context *ParseContext, indent 
 			formatTwoColumns(buf, indent, padding, width, rows)
 			return buf.String()
 		},
-		"FormatAppUsage":     formatAppUsage,
-		"FormatCommandUsage": formatCmdUsage,
+		"FormatAppUsage":        formatAppUsage,
+		"FormatCommandUsage":    formatCmdUsage,
+		"FormatAdditionalUsage": formatAdditionalUsage,
 		"IsCumulative": func(value Value) bool {
 			r, ok := value.(remainderArg)
 			return ok && r.IsCumulative()

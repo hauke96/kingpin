@@ -1,7 +1,7 @@
 package kingpin
 
 // Default usage template.
-var DefaultUsageTemplate = `{{define "FormatCommand"}}\
+var DefaultUsageTemplate = `a{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\
@@ -45,10 +45,11 @@ Subcommands:
 Commands:
 {{template "FormatCommands" .App}}
 {{end}}\
+{{.App|FormatAdditionalUsage}}
 `
 
 // Usage template where command's optional flags are listed separately
-var SeparateOptionalFlagsUsageTemplate = `{{define "FormatCommand"}}\
+var SeparateOptionalFlagsUsageTemplate = `b{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\
@@ -99,7 +100,7 @@ Commands:
 `
 
 // Usage template with compactly formatted commands.
-var CompactUsageTemplate = `{{define "FormatCommand"}}\
+var CompactUsageTemplate = `c{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\
@@ -146,7 +147,7 @@ Commands:
 {{end}}\
 `
 
-var ManPageTemplate = `{{define "FormatFlags"}}\
+var ManPageTemplate = `d{{define "FormatFlags"}}\
 {{range .Flags}}\
 {{if not .Hidden}}\
 .TP
@@ -194,7 +195,7 @@ var ManPageTemplate = `{{define "FormatFlags"}}\
 `
 
 // Default usage template.
-var LongHelpTemplate = `{{define "FormatCommand"}}\
+var LongHelpTemplate = `e{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\

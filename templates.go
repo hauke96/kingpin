@@ -1,16 +1,19 @@
 package kingpin
 
 // Default usage template.
+// The statement {{if $i}} create a new line for every entry with index $i - except the first one
 var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\
 
 {{define "FormatCommands"}}\
-{{range .FlattenedCommands}}\
+{{range $i, $v := .FlattenedCommands}}\
+{{if $i}}
+{{end}}\
 {{if not .Hidden}}\
   {{.FullCommand}}{{if .Default}}*{{end}}{{template "FormatCommand" .}}
-{{.Help|Wrap 4}}
+{{.Help|Wrap 4}}\
 {{end}}\
 {{end}}\
 {{end}}\
@@ -41,7 +44,7 @@ usage: {{.App.Name}}{{template "FormatUsage" .App}}
 {{end}}\
 {{if .Context.Flags}}\
 Flags:
-{{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}
+{{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}\
 {{end}}\
 {{if .Context.Args}}\
 Args:

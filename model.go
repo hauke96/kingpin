@@ -198,18 +198,18 @@ func (a *Application) Model() *ApplicationModel {
 	}
 }
 
-func (a *CustomDescriptionGroup) Model() *CustomDescriptionGroupModel {
+func (c *CustomDescriptionGroup) Model() *CustomDescriptionGroupModel {
 	m := &CustomDescriptionGroupModel{}
-	for _, customDescription := range a.CustomDescriptions {
+	for _, customDescription := range c.CustomDescriptions {
 		m.CustomDescriptions = append(m.CustomDescriptions, customDescription.Model())
 	}
 	return m
 }
 
-func (a *CustomDescription) Model() *CustomDescriptionModel {
+func (c *CustomDescription) Model() *CustomDescriptionModel {
 	return &CustomDescriptionModel{
-		Title: a.title,
-		Help:  a.help,
+		Title: c.title,
+		Help:  c.help,
 	}
 }
 

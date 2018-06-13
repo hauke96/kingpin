@@ -60,12 +60,12 @@ type CustomDescriptionGroup struct {
 	CustomDescriptions []*CustomDescription
 }
 
-func (a *CustomDescriptionGroup) addCustomDescription(title, help string) {
+func (c *CustomDescriptionGroup) addCustomDescription(title, help string) {
 	newDesc := &CustomDescription{
 		title: title,
 		help:  help,
 	}
-	a.CustomDescriptions = append(a.CustomDescriptions, newDesc)
+	c.CustomDescriptions = append(c.CustomDescriptions, newDesc)
 }
 
 // New creates a new Kingpin application instance.

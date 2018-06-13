@@ -323,7 +323,7 @@ func (a *Application) Command(name, help string) *CmdClause {
 	return a.addCommand(name, help)
 }
 
-func (a *Application) AddCustomDescription(title, help string) *Application {
+func (a *Application) CustomDescription(title, help string) *Application {
 	a.addCustomDescription(title, help)
 	return a
 }

@@ -193,7 +193,7 @@ func (a *Application) UsageForContextWithTemplate(context *ParseContext, indent 
 		},
 		"FormatAppUsage":     formatAppUsage,
 		"FormatCommandUsage": formatCmdUsage,
-		"FormatAdditionalUsage": func(app *ApplicationModel) string {
+		"FormatCustomDescription": func(app *ApplicationModel) string {
 			s := []string{app.Name}
 
 			s = append(s, wrap(0, width, app.Help))

@@ -165,11 +165,11 @@ func (c *CmdModel) String() string {
 	return c.FullCommand
 }
 
-type AdditionalUsageGroupModel struct {
-	AdditionalUsages []*AdditionalUsageModel
+type CustomDescriptionGroupModel struct {
+	CustomDescriptions []*CustomDescriptionModel
 }
 
-type AdditionalUsageModel struct {
+type CustomDescriptionModel struct {
 	Title string
 	Help  string
 }
@@ -182,32 +182,32 @@ type ApplicationModel struct {
 	*ArgGroupModel
 	*CmdGroupModel
 	*FlagGroupModel
-	*AdditionalUsageGroupModel
+	*CustomDescriptionGroupModel
 }
 
 func (a *Application) Model() *ApplicationModel {
 	return &ApplicationModel{
-		Name:                      a.Name,
-		Help:                      a.Help,
-		Version:                   a.version,
-		Author:                    a.author,
-		FlagGroupModel:            a.flagGroup.Model(),
-		ArgGroupModel:             a.argGroup.Model(),
-		CmdGroupModel:             a.cmdGroup.Model(),
-		AdditionalUsageGroupModel: a.AdditionalUsageGroup.Model(),
+		Name:                        a.Name,
+		Help:                        a.Help,
+		Version:                     a.version,
+		Author:                      a.author,
+		FlagGroupModel:              a.flagGroup.Model(),
+		ArgGroupModel:               a.argGroup.Model(),
+		CmdGroupModel:               a.cmdGroup.Model(),
+		CustomDescriptionGroupModel: a.CustomDescriptionGroup.Model(),
 	}
 }
 
-func (a *AdditionalUsageGroup) Model() *AdditionalUsageGroupModel {
-	m := &AdditionalUsageGroupModel{}
-	for _, additionalUsage := range a.AdditionalUsages {
-		m.AdditionalUsages = append(m.AdditionalUsages, additionalUsage.Model())
+func (a *CustomDescriptionGroup) Model() *CustomDescriptionGroupModel {
+	m := &CustomDescriptionGroupModel{}
+	for _, customDescription := range a.CustomDescriptions {
+		m.CustomDescriptions = append(m.CustomDescriptions, customDescription.Model())
 	}
 	return m
 }
 
-func (a *AdditionalUsage) Model() *AdditionalUsageModel {
-	return &AdditionalUsageModel{
+func (a *CustomDescription) Model() *CustomDescriptionModel {
+	return &CustomDescriptionModel{
 		Title: a.title,
 		Help:  a.help,
 	}

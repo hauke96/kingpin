@@ -20,7 +20,15 @@ var DefaultUsageTemplate = `a{{define "FormatCommand"}}\
 {{if .Help}}
 {{.Help|Wrap 0}}\
 {{end}}\
+{{end}}\
 
+{{define "FormatAdditionalUsage"}}\
+{{if .AdditionalUsageGroupModel.AdditionalUsages}}\
+{{range .AdditionalUsageGroupModel.AdditionalUsages}}\
+{{.Title}}:
+{{.Help|Wrap 2}}\ 
+{{end}}\
+{{end}}\
 {{end}}\
 
 {{if .Context.SelectedCommand}}\
@@ -43,9 +51,9 @@ Subcommands:
 {{end}}\
 {{else if .App.Commands}}\
 Commands:
-{{template "FormatCommands" .App}}
+{{template "FormatCommands" .App}}\
 {{end}}\
-{{.App|FormatAdditionalUsage}}
+{{template "FormatAdditionalUsage" .App}}\
 `
 
 // Usage template where command's optional flags are listed separately

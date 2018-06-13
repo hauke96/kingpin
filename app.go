@@ -29,7 +29,7 @@ type Application struct {
 	Help string
 
 	// Additional information about the application (e.g. license, contact, general usage information, etc.)
-	*CustomDescriptionGroup
+	*customDescriptionGroup
 
 	author         string
 	version        string
@@ -51,21 +51,21 @@ type Application struct {
 	VersionFlag *FlagClause
 }
 
-type CustomDescription struct {
+type customDescription struct {
 	title string
 	help  string
 }
 
-type CustomDescriptionGroup struct {
-	CustomDescriptions []*CustomDescription
+type customDescriptionGroup struct {
+	customDescriptions []*customDescription
 }
 
-func (c *CustomDescriptionGroup) addCustomDescription(title, help string) {
-	newDesc := &CustomDescription{
+func (c *customDescriptionGroup) addCustomDescription(title, help string) {
+	newDesc := &customDescription{
 		title: title,
 		help:  help,
 	}
-	c.CustomDescriptions = append(c.CustomDescriptions, newDesc)
+	c.customDescriptions = append(c.customDescriptions, newDesc)
 }
 
 // New creates a new Kingpin application instance.
@@ -81,7 +81,7 @@ func New(name, help string) *Application {
 	a.flagGroup = newFlagGroup()
 	a.argGroup = newArgGroup()
 	a.cmdGroup = newCmdGroup(a)
-	a.CustomDescriptionGroup = newCustomDescriptionGroup()
+	a.customDescriptionGroup = newCustomDescriptionGroup()
 	a.HelpFlag = a.Flag("help", "Show context-sensitive help (also try --help-long and --help-man).")
 	a.HelpFlag.Bool()
 	a.Flag("help-long", "Generate long help.").Hidden().PreAction(a.generateLongHelp).Bool()
@@ -93,8 +93,8 @@ func New(name, help string) *Application {
 	return a
 }
 
-func newCustomDescriptionGroup() *CustomDescriptionGroup {
-	return &CustomDescriptionGroup{}
+func newCustomDescriptionGroup() *customDescriptionGroup {
+	return &customDescriptionGroup{}
 }
 
 func (a *Application) generateLongHelp(c *ParseContext) error {

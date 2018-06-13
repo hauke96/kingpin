@@ -165,6 +165,15 @@ func (c *CmdModel) String() string {
 	return c.FullCommand
 }
 
+type AdditionalUsageGroupModel struct {
+	AdditionalUsages []*AdditionalUsageModel
+}
+
+type AdditionalUsageModel struct {
+	Title string
+	Help  string
+}
+
 type ApplicationModel struct {
 	Name    string
 	Help    string
@@ -173,17 +182,34 @@ type ApplicationModel struct {
 	*ArgGroupModel
 	*CmdGroupModel
 	*FlagGroupModel
+	*AdditionalUsageGroupModel
 }
 
 func (a *Application) Model() *ApplicationModel {
 	return &ApplicationModel{
-		Name:           a.Name,
-		Help:           a.Help,
-		Version:        a.version,
-		Author:         a.author,
-		FlagGroupModel: a.flagGroup.Model(),
-		ArgGroupModel:  a.argGroup.Model(),
-		CmdGroupModel:  a.cmdGroup.Model(),
+		Name:                      a.Name,
+		Help:                      a.Help,
+		Version:                   a.version,
+		Author:                    a.author,
+		FlagGroupModel:            a.flagGroup.Model(),
+		ArgGroupModel:             a.argGroup.Model(),
+		CmdGroupModel:             a.cmdGroup.Model(),
+		AdditionalUsageGroupModel: a.AdditionalUsageGroup.Model(),
+	}
+}
+
+func (a *AdditionalUsageGroup) Model() *AdditionalUsageGroupModel {
+	m := &AdditionalUsageGroupModel{}
+	for _, additionalUsage := range a.AdditionalUsages {
+		m.AdditionalUsages = append(m.AdditionalUsages, additionalUsage.Model())
+	}
+	return m
+}
+
+func (a *AdditionalUsage) Model() *AdditionalUsageModel {
+	return &AdditionalUsageModel{
+		Title: a.title,
+		Help:  a.help,
 	}
 }
 

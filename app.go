@@ -28,6 +28,9 @@ type Application struct {
 	Name string
 	Help string
 
+	// Additional information about the application (e.g. license, contact, general usage information, etc.)
+	*AdditionalUsageGroup
+
 	author         string
 	version        string
 	errorWriter    io.Writer // Destination for errors.
@@ -48,6 +51,15 @@ type Application struct {
 	VersionFlag *FlagClause
 }
 
+type AdditionalUsage struct {
+	title string
+	help  string
+}
+
+type AdditionalUsageGroup struct {
+	AdditionalUsages []*AdditionalUsage
+}
+
 // New creates a new Kingpin application instance.
 func New(name, help string) *Application {
 	a := &Application{
@@ -61,6 +73,7 @@ func New(name, help string) *Application {
 	a.flagGroup = newFlagGroup()
 	a.argGroup = newArgGroup()
 	a.cmdGroup = newCmdGroup(a)
+	a.AdditionalUsageGroup = newAdditionalUsageGroup()
 	a.HelpFlag = a.Flag("help", "Show context-sensitive help (also try --help-long and --help-man).")
 	a.HelpFlag.Bool()
 	a.Flag("help-long", "Generate long help.").Hidden().PreAction(a.generateLongHelp).Bool()
@@ -70,6 +83,10 @@ func New(name, help string) *Application {
 	a.Flag("completion-script-zsh", "Generate completion script for ZSH.").Hidden().PreAction(a.generateZSHCompletionScript).Bool()
 
 	return a
+}
+
+func newAdditionalUsageGroup() *AdditionalUsageGroup {
+	return &AdditionalUsageGroup{}
 }
 
 func (a *Application) generateLongHelp(c *ParseContext) error {

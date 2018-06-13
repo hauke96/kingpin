@@ -239,11 +239,18 @@ var LongHelpTemplate = `e{{define "FormatCommand"}}\
 {{end}}\
 
 {{define "FormatCommands"}}\
-{{range .FlattenedCommands}}\
+{{range $i, $v := .FlattenedCommands}}\
+{{if $i}}
+{{end}}\
 {{if not .Hidden}}\
   {{.FullCommand}}{{template "FormatCommand" .}}
-{{.Help|Wrap 4}}
-{{with .Flags|FlagsToTwoColumns}}{{FormatTwoColumnsWithIndent . 4 2}}{{end}}
+{{.Help|Wrap 4}}\
+{{if .Flags}}\
+{{if $i}}
+{{end}}\
+{{end}}\
+{{with .Flags|FlagsToTwoColumns}}{{FormatTwoColumnsWithIndent . 4 2}}\
+{{end}}\
 {{end}}\
 {{end}}\
 {{end}}\
@@ -253,22 +260,34 @@ var LongHelpTemplate = `e{{define "FormatCommand"}}\
 {{if .Help}}
 {{.Help|Wrap 0}}\
 {{end}}\
-
+{{end}}\
+{{define "FormatCustomDescription"}}\
+{{if .CustomDescriptionGroupModel.CustomDescriptions}}\
+{{range .CustomDescriptionGroupModel.CustomDescriptions}}
+{{if .Title}}\
+{{.Title}}:
+{{.Help|Wrap 2}}\
+{{else}}\
+{{.Help|Wrap 0}}\
+{{end}}\
+{{end}}\
+{{end}}\
 {{end}}\
 
 usage: {{.App.Name}}{{template "FormatUsage" .App}}
 {{if .Context.Flags}}\
 Flags:
-{{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}
+{{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}\
 {{end}}\
-{{if .Context.Args}}\
+{{if .Context.Args}}
 Args:
-{{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}
+{{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}\
 {{end}}\
-{{if .App.Commands}}\
+{{if .App.Commands}}
 Commands:
-{{template "FormatCommands" .App}}
+{{template "FormatCommands" .App}}\
 {{end}}\
+{{template "FormatCustomDescription" .App}}\
 `
 
 var BashCompletionTemplate = `

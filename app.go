@@ -328,6 +328,11 @@ func (a *Application) CustomDescription(title, help string) *Application {
 	return a
 }
 
+func (a *Application) SimpleTextBlock(help string) *Application {
+	a.addCustomDescription("", help)
+	return a
+}
+
 // Interspersed control if flags can be interspersed with positional arguments
 //
 // true (the default) means that they can, false means that all the flags must appear before the first positional arguments.

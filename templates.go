@@ -25,8 +25,13 @@ var DefaultUsageTemplate = `a{{define "FormatCommand"}}\
 {{define "FormatCustomDescription"}}\
 {{if .CustomDescriptionGroupModel.CustomDescriptions}}\
 {{range .CustomDescriptionGroupModel.CustomDescriptions}}\
+{{if .Title}}\
 {{.Title}}:
 {{.Help|Wrap 2}}\ 
+{{else}}\
+{{.Help}}\ 
+
+{{end}}\
 {{end}}\
 {{end}}\
 {{end}}\

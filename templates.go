@@ -1,7 +1,7 @@
 package kingpin
 
 // Default usage template.
-var DefaultUsageTemplate = `a{{define "FormatCommand"}}\
+var DefaultUsageTemplate = `{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\
@@ -21,16 +21,14 @@ var DefaultUsageTemplate = `a{{define "FormatCommand"}}\
 {{.Help|Wrap 0}}\
 {{end}}\
 {{end}}\
-
 {{define "FormatCustomDescription"}}\
 {{if .CustomDescriptionGroupModel.CustomDescriptions}}\
-{{range .CustomDescriptionGroupModel.CustomDescriptions}}\
+{{range .CustomDescriptionGroupModel.CustomDescriptions}}
 {{if .Title}}\
 {{.Title}}:
-{{.Help|Wrap 2}}\ 
+{{.Help|Wrap 2}}\
 {{else}}\
-{{.Help}}\ 
-
+{{.Help|Wrap 0}}\
 {{end}}\
 {{end}}\
 {{end}}\

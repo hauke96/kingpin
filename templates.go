@@ -114,7 +114,7 @@ Commands:
 `
 
 // Usage template with compactly formatted commands.
-var CompactUsageTemplate = `c{{define "FormatCommand"}}\
+var CompactUsageTemplate = `{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\
@@ -133,32 +133,44 @@ var CompactUsageTemplate = `c{{define "FormatCommand"}}\
 {{if .Help}}
 {{.Help|Wrap 0}}\
 {{end}}\
-
 {{end}}\
-
-{{if .Context.SelectedCommand}}\
-usage: {{.App.Name}} {{.Context.SelectedCommand}}{{template "FormatUsage" .Context.SelectedCommand}}
+{{define "FormatCustomDescription"}}\
+{{if .CustomDescriptionGroupModel.CustomDescriptions}}\
+{{range .CustomDescriptionGroupModel.CustomDescriptions}}
+{{if .Title}}\
+{{.Title}}:
+{{.Help|Wrap 2}}\
 {{else}}\
-usage: {{.App.Name}}{{template "FormatUsage" .App}}
+{{.Help|Wrap 0}}\
 {{end}}\
-{{if .Context.Flags}}\
+{{end}}\
+{{end}}\
+{{end}}\
+
+{{if .Context.SelectedCommand}}\
+usage: {{.App.Name}} {{.Context.SelectedCommand}}{{template "FormatUsage" .Context.SelectedCommand}}\
+{{else}}\
+usage: {{.App.Name}}{{template "FormatUsage" .App}}\
+{{end}}\
+{{if .Context.Flags}}
 Flags:
-{{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}
+{{.Context.Flags|FlagsToTwoColumns|FormatTwoColumns}}\
 {{end}}\
-{{if .Context.Args}}\
+{{if .Context.Args}}
 Args:
-{{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}
+{{.Context.Args|ArgsToTwoColumns|FormatTwoColumns}}\
 {{end}}\
 {{if .Context.SelectedCommand}}\
-{{if .Context.SelectedCommand.Commands}}\
+{{if .Context.SelectedCommand.Commands}}
 Commands:
   {{.Context.SelectedCommand}}
-{{template "FormatCommandList" .Context.SelectedCommand.Commands}}
+{{template "FormatCommandList" .Context.SelectedCommand.Commands}}\
 {{end}}\
-{{else if .App.Commands}}\
+{{else if .App.Commands}}
 Commands:
-{{template "FormatCommandList" .App.Commands}}
+{{template "FormatCommandList" .App.Commands}}\
 {{end}}\
+{{template "FormatCustomDescription" .App}}\
 `
 
 var ManPageTemplate = `d{{define "FormatFlags"}}\

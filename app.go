@@ -60,6 +60,14 @@ type AdditionalUsageGroup struct {
 	AdditionalUsages []*AdditionalUsage
 }
 
+func (a *AdditionalUsageGroup) addAdditionalUsage(title, help string) {
+	newUsage := &AdditionalUsage{
+		title: title,
+		help:  help,
+	}
+	a.AdditionalUsages = append(a.AdditionalUsages, newUsage)
+}
+
 // New creates a new Kingpin application instance.
 func New(name, help string) *Application {
 	a := &Application{
@@ -313,6 +321,11 @@ func (a *Application) PreAction(action Action) *Application {
 // Command adds a new top-level command.
 func (a *Application) Command(name, help string) *CmdClause {
 	return a.addCommand(name, help)
+}
+
+func (a *Application) AdditionalUsage(title, help string) *Application {
+	a.addAdditionalUsage(title, help)
+	return a
 }
 
 // Interspersed control if flags can be interspersed with positional arguments

@@ -233,7 +233,7 @@ var ManPageTemplate = `d{{define "FormatFlags"}}\
 `
 
 // Default usage template.
-var LongHelpTemplate = `e{{define "FormatCommand"}}\
+var LongHelpTemplate = `{{define "FormatCommand"}}\
 {{if .FlagSummary}} {{.FlagSummary}}{{end}}\
 {{range .Args}}{{if not .Hidden}} {{if not .Required}}[{{end}}{{if .PlaceHolder}}{{.PlaceHolder}}{{else}}<{{.Name}}>{{end}}{{if .Value|IsCumulative}}...{{end}}{{if not .Required}}]{{end}}{{end}}{{end}}\
 {{end}}\

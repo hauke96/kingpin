@@ -28,6 +28,9 @@ type Application struct {
 	Name string
 	Help string
 
+	// Additional information about the application (e.g. license, contact, general usage information, etc.)
+	*customDescriptionGroup
+
 	author         string
 	version        string
 	errorWriter    io.Writer // Destination for errors.
@@ -48,6 +51,23 @@ type Application struct {
 	VersionFlag *FlagClause
 }
 
+type customDescription struct {
+	title string
+	help  string
+}
+
+type customDescriptionGroup struct {
+	customDescriptions []*customDescription
+}
+
+func (c *customDescriptionGroup) addCustomDescription(title, help string) {
+	newDesc := &customDescription{
+		title: title,
+		help:  help,
+	}
+	c.customDescriptions = append(c.customDescriptions, newDesc)
+}
+
 // New creates a new Kingpin application instance.
 func New(name, help string) *Application {
 	a := &Application{
@@ -61,6 +81,7 @@ func New(name, help string) *Application {
 	a.flagGroup = newFlagGroup()
 	a.argGroup = newArgGroup()
 	a.cmdGroup = newCmdGroup(a)
+	a.customDescriptionGroup = newCustomDescriptionGroup()
 	a.HelpFlag = a.Flag("help", "Show context-sensitive help (also try --help-long and --help-man).")
 	a.HelpFlag.Bool()
 	a.Flag("help-long", "Generate long help.").Hidden().PreAction(a.generateLongHelp).Bool()
@@ -70,6 +91,10 @@ func New(name, help string) *Application {
 	a.Flag("completion-script-zsh", "Generate completion script for ZSH.").Hidden().PreAction(a.generateZSHCompletionScript).Bool()
 
 	return a
+}
+
+func newCustomDescriptionGroup() *customDescriptionGroup {
+	return &customDescriptionGroup{}
 }
 
 func (a *Application) generateLongHelp(c *ParseContext) error {
@@ -296,6 +321,16 @@ func (a *Application) PreAction(action Action) *Application {
 // Command adds a new top-level command.
 func (a *Application) Command(name, help string) *CmdClause {
 	return a.addCommand(name, help)
+}
+
+func (a *Application) CustomDescription(title, help string) *Application {
+	a.addCustomDescription(title, help)
+	return a
+}
+
+func (a *Application) SimpleTextBlock(help string) *Application {
+	a.addCustomDescription("", help)
+	return a
 }
 
 // Interspersed control if flags can be interspersed with positional arguments

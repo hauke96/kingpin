@@ -51,6 +51,13 @@ func (a *Application) Usage(args []string) {
 	}
 }
 
+func wrap(indent, width int, s string) string {
+	buf := bytes.NewBuffer(nil)
+	indentText := strings.Repeat(" ", indent)
+	doc.ToText(buf, s, indentText, "  "+indentText, width-indent)
+	return buf.String()
+}
+
 func formatAppUsage(app *ApplicationModel) string {
 	s := []string{app.Name}
 	if len(app.Flags) > 0 {
@@ -119,10 +126,7 @@ func (a *Application) UsageForContextWithTemplate(context *ParseContext, indent 
 			return strings.Repeat(" ", level*indent)
 		},
 		"Wrap": func(indent int, s string) string {
-			buf := bytes.NewBuffer(nil)
-			indentText := strings.Repeat(" ", indent)
-			doc.ToText(buf, s, indentText, "  "+indentText, width-indent)
-			return buf.String()
+			return wrap(indent, width, s)
 		},
 		"FormatFlag": formatFlag,
 		"FlagsToTwoColumns": func(f []*FlagModel) [][2]string {
@@ -189,6 +193,13 @@ func (a *Application) UsageForContextWithTemplate(context *ParseContext, indent 
 		},
 		"FormatAppUsage":     formatAppUsage,
 		"FormatCommandUsage": formatCmdUsage,
+		"FormatCustomDescription": func(app *ApplicationModel) string {
+			s := []string{app.Name}
+
+			s = append(s, wrap(0, width, app.Help))
+
+			return strings.Join(s, "")
+		},
 		"IsCumulative": func(value Value) bool {
 			r, ok := value.(remainderArg)
 			return ok && r.IsCumulative()

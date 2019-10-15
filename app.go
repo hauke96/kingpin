@@ -56,6 +56,12 @@ type customDescription struct {
 	help  string
 }
 
+// Help sets the help message.
+func (c *customDescription) Help(help string) *customDescription {
+	c.help = help
+	return c
+}
+
 type customDescriptionGroup struct {
 	customDescriptions []*customDescription
 }
